@@ -77,6 +77,14 @@ CREATE TABLE treaments(
 
 
 INSERT INTO facilities (facility_name,facility_address,funding_date,head_doctor,impact,history,email,orang_number,lonestar_number,password_hash) 
-VALUES("St. Joseph Catholic Hospital","Catholic junction,congo",datetime('now'),"Dr.John Peters","    Lorem ipsum dolor sit amet consectetur adipisicing elit. At magni dolorem cumque inventore praesentium quis suscipit ipsa nemo ratione vero. Molestias sunt eum consectetur labore nam eos at libero voluptate!Lorem
+VALUES("Redmenption Hospital","New kru town",datetime('now'),"Dr.Moses Blackie","    Lorem ipsum dolor sit amet consectetur adipisicing elit. At magni dolorem cumque inventore praesentium quis suscipit ipsa nemo ratione vero. Molestias sunt eum consectetur labore nam eos at libero voluptate!Lorem
 ","    Lorem ipsum dolor sit amet consectetur adipisicing elit. At magni dolorem cumque inventore praesentium quis suscipit ipsa nemo ratione vero. Molestias sunt eum consectetur labore nam eos at libero voluptate!Lorem
-","stJosephcatholichospital@gmail.com","0777557321","0888244321","st.jch123456789");
+","redemption@gmail.com","0778596321","0886243320","redemption123456789");
+
+SELECT col1, col2, ...
+ FROM ...
+ WHERE ... 
+ ORDER BY -- this is a MUST there must be ORDER BY statement
+-- the paging comes here
+OFFSET     10 ROWS       -- skip 10 rows
+FETCH NEXT 10 ROWS ONLY; -- take 10 rows

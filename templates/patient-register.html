@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    | Home
+{% endblock %}
+
+{% block main %}
+<header class="bg-dark py-5">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center justify-content-center">
+            <div class="col-lg-8 col-xl-7 col-xxl-6">
+                <div class="my-5 text-center text-xl-start">
+                    <h1 class="display-5 fw-bolder text-white mb-2">Welcome To MY Health</h1>
+                    <p class="lead fw-normal text-white-50 mb-4">This is a digital health center that promotes the communication between hospital, clinics and patient.</p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-light" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="../static/img/heart2.jpeg" alt="..." /></div>
+        </div>
+    </div>
+</header>
+<div class="container facilities-nav mb-5">
+    <div class="shadow p-4 mb-5 bg-white rounded">
+        <div class="container wrapper">
+            <form action="/patients" method="POST" id="patient">
+                <div class="form-head mb-3">
+                    <h3>Patient Registration</h3>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="John Brown" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="congo town" required>
+                </div>
+                <div class="mb-3">
+                    <label for="orange-num" class="form-label">Orange Number</label>
+                    <input type="number" class="form-control" id="orange-num" name="orange-num" placeholder="0777112233" required>
+                </div>
+                <div class="mb-3">
+                    <label for="lonestar-num" class="form-label">Lonestar Number</label>
+                    <input type="number" class="form-control" id="lonestar-num" name="lonestar-num" placeholder="0888112233" required>
+                </div>
+                <div class="mb-3">
+                    <label for="dob" class="form-label">Date Of Birth</label>
+                    <input type="date" class="form-control" name="dob" id="dob" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="c-password">Password</label>
+                    <input type="password" class="form-control" id="c-password" name="c-password" placeholder="Confirm Password" required>
+                </div>
+                <button class="btn btn-outline-dark" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

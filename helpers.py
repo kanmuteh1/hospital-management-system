@@ -8,17 +8,17 @@ from functools import wraps
 
 def apology(message, code=400):
     """Render message as an apology to user."""
-    def escape(s):
-        """
-        Escape special characters.
+    # def escape(s):
+    #     """
+    #     Escape special characters.
 
-        https://github.com/jacebrowning/memegen#special-characters
-        """
-        for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
-                         ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
-            s = s.replace(old, new)
-        return s
-    return render_template("apology.html", top=code, bottom=escape(message)), code
+    #     https://github.com/jacebrowning/memegen#special-characters
+    #     """
+    #     for old, new in [("-", "--"), (" ", "-"), ("_", "__"), ("?", "~q"),
+    #                      ("%", "~p"), ("#", "~h"), ("/", "~s"), ("\"", "''")]:
+    #         s = s.replace(old, new)
+    #     return s
+    return render_template("apology.html", top=code, bottom=message), code
 
 
 def login_required(f):
@@ -29,8 +29,8 @@ def login_required(f):
     """
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
+        if session.get("name") is None:
+            return redirect("/patient-login")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -62,3 +62,21 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+def carousel(direction,pages):
+    if direction == 'next':
+        pages = pages + 4
+        return pages
+    elif direction == 'prev':
+        pages = pages - 4
+        return pages
+    else:
+        return 0
+
+def statusCheck(status,choosen_status):
+    if choosen_status == status[0]:
+        return 0
+    elif choosen_status == status[1]:
+        return 1
+    else:
+        return 2
