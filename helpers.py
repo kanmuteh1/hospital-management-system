@@ -1,6 +1,7 @@
 import os
 import requests
 import urllib.parse
+import random
 
 from flask import redirect, render_template, request, session
 from functools import wraps
@@ -80,3 +81,31 @@ def statusCheck(status,choosen_status):
         return 1
     else:
         return 2
+
+def hospitalNum(x, leading_zeroes=True):
+    """Return an X digit number, leading_zeroes returns a string, otherwise int"""
+    if not leading_zeroes:
+        # wrap with str() for uniform results
+        generated_num = random.randint(10**(x-1), 10**x-1)
+
+        if generated_num in hospinal_numbers:
+            hospitalNum(x, false)
+        else:
+            hospinal_numbers.append(generated_num)
+            return generated_num
+    else:
+        if x > 6000:
+            generated_num = ''.join([str(random.randint(0, 9)) for i in xrange(x)])
+
+            if generated_num in hospinal_numbers:
+                hospinal_numbers.append(generated_num)
+                hospitalNum(x)
+            else:
+                return generated_num
+        else:
+            generated_num = '{0:0{x}d}'.format(random.randint(0, 10**x-1), x=x)
+
+            if generated_num in hospinal_numbers:
+                hospitalNum(x)
+            else:
+                return generated_num

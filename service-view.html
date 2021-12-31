@@ -1,0 +1,10 @@
+{% for data in data %}
+    <div class="col-lg-3 mb-2 mb-lg-3">
+        <div class="card p-2 text-center">
+            <h5 class="card-title">{{ data.facility_service }}</h5>
+            <div class="card-body">
+                <p class="card-text">{{ data.about_service }}</p>
+            </div>
+        </div> 
+    </div> 
+{% endfor %}

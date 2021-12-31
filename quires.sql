@@ -29,18 +29,21 @@ CREATE TABLE patients(
 -- registration table
 CREATE TABLE registration(
     id INTEGER,
-    facility_id,
-    patient_id,
+    facility_id INT,
+    patient_id INT,
+    account_num INT NOT NULL,
+    account_pin INT NOT NULL,
     facility_assign_num INT,
-    PRIMARY KEY(id)
+    registration_date DATE NOT NULL,
+    PRIMARY KEY(id),
     FOREIGN KEY (facility_id)REFERENCES facilities(facility_id),
     FOREIGN KEY (patient_id)REFERENCES patients(patient_id)
 );
 
 -- services table
 CREATE TABLE services(
-    id INTEGER,
-    facility_id,
+    id INT,
+    facility_id INT,
     facility_service TEXT NOT NULL,
     about_service TEXT NOT NULL,
     PRIMARY KEY(id),

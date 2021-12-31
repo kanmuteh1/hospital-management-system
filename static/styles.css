@@ -11310,11 +11310,23 @@ html {
 }
 
 /* my own style */
+@media (min-width: 540px) {
+  .facilities-nav{
+    position: absolute;
+    left: 0.5%;
+    top: 40%;
+    z-index: 10;
+  }
+
+}
+@media (min-width: 541px) {
 .facilities-nav{
   position: absolute;
   left: 8%;
-  top: 60%;
+  top: 64%;
   z-index: 10;
+}
+
 }
 
 .facility-header{
@@ -11323,7 +11335,7 @@ html {
 
 .about-ficility{
   padding: 2%;
-  background-color: rgb(207, 234, 245);
+  background-color: rgb(248, 238, 238);
 }
 
 .about-us{
@@ -11333,6 +11345,18 @@ html {
 .our-service{
   text-align: center;
 }
+
+.hospital {
+  text-decoration: none;
+  color: #000;
+}
+
+.hospital:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+
 
 /* form styling */
 
@@ -11488,6 +11512,7 @@ img {
       -webkit-transform: translateX(0);
       transform: translateX(0)
   }
+  
 }
 
 @media (max-width: 1500px) {

@@ -1,5 +1,6 @@
 import os
 import json
+import random
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, jsonify,  session, make_response
@@ -43,15 +44,12 @@ def index():
         facility_data = db.execute("SELECT * FROM facilities WHERE facility_name = ? ", name)
         patient_data = db.execute("SELECT * FROM patients WHERE patient_name = ? ", name)
         if len(facility_data) != 1:
-            print("---IT IS PATIENT DATA---")
             data = db.execute("SELECT facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
             return render_template('index.html',data=data)
         elif len(patient_data) != 1:
-            print("---IT IS FACILITY DATA---")
             data = db.execute("SELECT facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
             return render_template('index.html',data=data)
-            
-    
+               
 @app.route("/patient-login", methods=["GET", "POST"])
 def patient_login():
     """Log user in"""
@@ -140,8 +138,26 @@ def register():
     status = ['Patient', 'Health Facility']
     choosen_status = request.args.get('status')
     if request.method == "POST":
-        return "TODO"
-    
+        patient_name = session.get("name")
+        facility_name = request.args.get("facility_name")
+        account_number = request.form.get("number")
+        account_pin = request.form.get("password")
+        hospital_num = '{0:0{x}d}'.format(random.randint(0, 10**12-1), x=12)
+        
+        if patient_name is None:
+            return redirect("/patient-login")
+        else: 
+            patient_id = db.execute("SELECT patient_id FROM patients WHERE patient_name = ?", patient_name)
+            facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
+            data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
+            if len(data) == 0:
+                db.execute("INSERT INTO registration  (facility_id, patient_id,account_num, account_pin, facility_assign_num,registration_date) VALUES(?,?,?,?,?,datetime('now'))", facility_id[0]["facility_id"], patient_id[0]["patient_id"], account_number, account_pin, hospital_num)
+                return redirect(f"/facilities?name={facility_name}")
+            else:
+                data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
+                db.execute("INSERT INTO registration  (facility_id, patient_id,account_num, account_pin, facility_assign_num,registration_date) VALUES(?,?,?,?,?,datetime('now'))", facility_id[0]["facility_id"], patient_id[0]["patient_id"], account_number, account_pin, data[0]["facility_assign_num"])
+                return redirect(f"/facilities?name={facility_name}")
+
     status_value = statusCheck(status,choosen_status)
     if status_value == 0:
         return render_template('patient-register.html')
@@ -149,7 +165,6 @@ def register():
         return render_template('facility-register.html')
     else:
         return redirect("/")
-
 
 @app.route("/facilities", methods=["GET", "POST"])
 def ficility():
@@ -208,7 +223,7 @@ def ficility():
     else:
         rows = db.execute("SELECT * FROM facilities WHERE facility_name = ?", request.args.get("name"))
         return render_template("facility.html",data=rows)
-     
+        # INNER JOIN services ON services.facility_id=facilities.facility_id
 
 @app.route("/patients", methods=["GET", "POST"])
 def create_patient():
@@ -256,7 +271,6 @@ def create_patient():
 
             # Remember which user has logged in
             session["id"] = rows[0]["patient_id"]
-            print("session",session["id"])
             # Redirect user to home page
             return render_template("patient-dashboard.html",data=rows)
 
@@ -271,7 +285,6 @@ def display_dashboard():
     name = session.get("name")
     facility_data = db.execute("SELECT * FROM facilities WHERE facility_name = ? ", name)
     patient_data = db.execute("SELECT * FROM patients WHERE patient_name = ? ", name)
-    print(facility_data)
     if len(facility_data) != 1:
         return render_template('patient-dashboard.html',data=patient_data)
     elif len(patient_data) != 1:
@@ -279,9 +292,27 @@ def display_dashboard():
 
 @app.route("/services", methods=["GET", "POST"])
 def service():
-    return "TODO"
+    if request.method == "POST":
+        facility_name = session.get("name")
+        service = request.form.get("service")
+        about_service = request.form.get("service-discription")
+        if not service:
+            return apology("Please provide Service", 400)
+        elif not about_service:
+            return apology("Please provide Text that discribes Servise", 400)
+        else:
+            facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
+            db.execute("INSERT INTO services  (facility_id,facility_service,about_service) VALUES(?,?,?)", facility_id[0]["facility_id"],service,about_service)
+            return redirect('/dashboards')
+    return render_template('./facility-dashboard/service.html')
 
-
+@app.route("/services-view", methods=["GET", "POST"])
+def serviceView():
+    facility_name = request.args.get("facility_name")
+    facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
+    data = db.execute("SELECT * FROM services WHERE facility_id = ?", facility_id[0]["facility_id"])
+    return render_template('service-view.html',data=data)
+    
 @app.route("/diagnosis", methods=["GET", "POST"])
 def diagnose():
     return "TODO"

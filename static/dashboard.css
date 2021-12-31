@@ -11699,3 +11699,15 @@ body {
   font-size: 0.75rem;
   border-radius: 0.25rem !important;
 }
+
+/* my own style */
+.header {
+  color: #000;
+  font-size: 27px;
+  padding: 10px;
+}
+
+.bigicon {
+  font-size: 35px;
+  color: #36A0FF;
+}

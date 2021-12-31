@@ -20,11 +20,36 @@ window.addEventListener('DOMContentLoaded', event => {
         //     document.body.classList.toggle('sb-sidenav-toggled');
         // }
         sidebarToggle.addEventListener('click', event => {
-            console.log("in here")
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
             localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
         });
     }
 
+});
+
+function services(){
+    let ajax = new XMLHttpRequest();
+
+    ajax.onreadystatechange = ()=>{
+       if(ajax.readyState == 4 && ajax.status == 200){
+            $('main').html(ajax.responseText);
+       }
+    }
+    ajax.open('GET', "/services", true);
+    ajax.send()
+}
+
+
+$(document).ready(()=>{
+    let ajax = new XMLHttpRequest();
+    const facility = document.body.querySelector('#patient');
+    let facility_name = facility.name;
+    ajax.onreadystatechange = ()=>{
+        if(ajax.readyState == 4 && ajax.status == 200){
+            document.getElementById("services").insertAdjacentHTML('beforeend',ajax.responseText)
+        }
+    }
+    ajax.open('GET', `/services-view?facility_name=${facility_name}`, true);
+    ajax.send()
 });
