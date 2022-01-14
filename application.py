@@ -36,31 +36,18 @@ db = SQL("sqlite:///health-care.db")
 
 @app.route("/")
 def index():
-    name = session.get("name")
-    if name is None:
-        data = db.execute("SELECT facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
-        return render_template('index.html',data=data)
-    else:
-        facility_data = db.execute("SELECT * FROM facilities WHERE facility_name = ? ", name)
-        patient_data = db.execute("SELECT * FROM patients WHERE patient_name = ? ", name)
-        if len(facility_data) != 1:
-            data = db.execute("SELECT facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
-            return render_template('index.html',data=data)
-        elif len(patient_data) != 1:
-            data = db.execute("SELECT facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
-            return render_template('index.html',data=data)
-               
+    return render_template('index.html')
+    
+# Log patient in       
 @app.route("/patient-login", methods=["GET", "POST"])
 def patient_login():
-    """Log user in"""
-
     # Forget any user_id
     session.clear()
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Ensure username was submitted
+        # Ensure patient name was submitted
         if not request.form.get("name"):
             return apology("must provide Name", 403)
 
@@ -68,35 +55,33 @@ def patient_login():
         elif not request.form.get("password"):
             return apology("must provide password", 403)
 
-        # Query database for username
+        # Query database for patient name
         rows = db.execute("SELECT * FROM patients WHERE patient_name = ?", request.form.get("name"))
 
-        # Ensure username exists and password is correct
+        # Ensure patient name exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["password_hash"], request.form.get("password")):
             return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
         session["name"] = rows[0]["patient_name"]
 
-        # Redirect user to home page
+        # Redirect patient to home page
         return redirect("/")
-        # return render_template("patient-dashboard.html",data=rows)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("patient-login.html")
 
+# Log facility in 
 @app.route("/facility-login", methods=["GET", "POST"])
 def facility_login():
-    """Log user in"""
-
     # Forget any user_id
     session.clear()
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Ensure username was submitted
+        # Ensure facility name was submitted
         if not request.form.get("name"):
             return apology("must provide Facility Name", 403)
 
@@ -104,7 +89,7 @@ def facility_login():
         elif not request.form.get("password"):
             return apology("must provide password", 403)
 
-        # Query database for username
+        # Query database for facility name
         rows = db.execute("SELECT * FROM facilities WHERE facility_name = ?", request.form.get("name"))
 
         # Ensure username exists and password is correct
@@ -112,59 +97,20 @@ def facility_login():
             return apology("invalid username and/or password", 403)
 
 
-        # Remember which user has logged in
+        # Remember which facility has logged in
         session["name"] = rows[0]["facility_name"]
 
-        # Redirect user to home page
+        # Redirect facility to home page
         return render_template("./facility-dashboard/index.html",data=rows)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("facility-login.html")
 
-
-@app.route("/logout")
-def logout():
-    """Log user out"""
-
-    # Forget any user_id
-    session.clear()
-
-    # Redirect user to login form
-    return redirect("/")
-
-@app.route("/registration", methods=["GET", "POST"])
-def register():
-    status = ['Patient', 'Health Facility']
-    choosen_status = request.args.get('status')
-    if request.method == "POST":
-        patient_name = session.get("name")
-        facility_name = request.args.get("facility_name")
-        account_number = request.form.get("number")
-        account_pin = request.form.get("password")
-        hospital_num = '{0:0{x}d}'.format(random.randint(0, 10**12-1), x=12)
-        
-        if patient_name is None:
-            return redirect("/patient-login")
-        else: 
-            patient_id = db.execute("SELECT patient_id FROM patients WHERE patient_name = ?", patient_name)
-            facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
-            data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
-            if len(data) == 0:
-                db.execute("INSERT INTO registration  (facility_id, patient_id,account_num, account_pin, facility_assign_num,registration_date) VALUES(?,?,?,?,?,datetime('now'))", facility_id[0]["facility_id"], patient_id[0]["patient_id"], account_number, account_pin, hospital_num)
-                return redirect(f"/facilities?name={facility_name}")
-            else:
-                data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
-                db.execute("INSERT INTO registration  (facility_id, patient_id,account_num, account_pin, facility_assign_num,registration_date) VALUES(?,?,?,?,?,datetime('now'))", facility_id[0]["facility_id"], patient_id[0]["patient_id"], account_number, account_pin, data[0]["facility_assign_num"])
-                return redirect(f"/facilities?name={facility_name}")
-
-    status_value = statusCheck(status,choosen_status)
-    if status_value == 0:
-        return render_template('patient-register.html')
-    elif status_value == 1:
-        return render_template('facility-register.html')
-    else:
-        return redirect("/")
+@app.route("/facility-carousel")
+def carousel():
+    data = db.execute("SELECT facility_id, facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
+    return render_template('carousel-facility.html',data=data)
 
 @app.route("/facilities", methods=["GET", "POST"])
 def ficility():
@@ -214,7 +160,7 @@ def ficility():
 
             rows = db.execute("SELECT * FROM facilities WHERE facility_name = ?", facility_name)
 
-            session["id"] = rows[0]["facility_id"]
+            session["name"] = rows[0]["facility_name"]
 
             return render_template("./facility-dashboard/index.html",data=rows)
 
@@ -223,11 +169,9 @@ def ficility():
     else:
         rows = db.execute("SELECT * FROM facilities WHERE facility_name = ?", request.args.get("name"))
         return render_template("facility.html",data=rows)
-        # INNER JOIN services ON services.facility_id=facilities.facility_id
 
 @app.route("/patients", methods=["GET", "POST"])
 def create_patient():
-    
     if request.method == "POST":
         session.clear()
         patient_name = request.form.get("name")
@@ -270,7 +214,7 @@ def create_patient():
             rows = db.execute("SELECT * FROM patients WHERE patient_name = ?", patient_name)
 
             # Remember which user has logged in
-            session["id"] = rows[0]["patient_id"]
+            session["name"] = rows[0]["patient_name"]
             # Redirect user to home page
             return render_template("patient-dashboard.html",data=rows)
 
@@ -280,13 +224,58 @@ def create_patient():
         # # Query database for username
         return "TODO"
 
+# log user out
+@app.route("/logout")
+def logout():
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to landing page
+    return redirect("/")
+
+@app.route("/registration", methods=["GET", "POST"])
+def register():
+    # registration status 
+    status = ['Patient', 'Health Facility']
+    choosen_status = request.args.get('status')
+
+    if request.method == "POST":
+        patient_name = session.get("name")
+        facility_name = request.args.get("facility_name")
+        account_number = request.form.get("number")
+        account_pin = request.form.get("password")
+        # generate health-facility number
+        hospital_num = '{0:0{x}d}'.format(random.randint(0, 10**12-1), x=12)
+        
+        if patient_name is None:
+            return redirect("/patient-login")
+        else: 
+            patient_id = db.execute("SELECT patient_id FROM patients WHERE patient_name = ?", patient_name)
+            facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
+            data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
+            if len(data) < 1:
+                db.execute("INSERT INTO registration  (facility_id, patient_id,account_num, account_pin, facility_assign_num,registration_date) VALUES(?,?,?,?,?,datetime('now'))", facility_id[0]["facility_id"], patient_id[0]["patient_id"], account_number, account_pin, hospital_num)
+                return redirect(f"/facilities?name={facility_name}")
+            else:
+                data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
+                db.execute("INSERT INTO registration  (facility_id, patient_id,account_num, account_pin, facility_assign_num,registration_date) VALUES(?,?,?,?,?,datetime('now'))", facility_id[0]["facility_id"], patient_id[0]["patient_id"], account_number, account_pin, data[0]["facility_assign_num"])
+                return redirect(f"/facilities?name={facility_name}")
+
+    status_value = statusCheck(status,choosen_status)
+    if status_value == 0:
+        return render_template('patient-register.html')
+    elif status_value == 1:
+        return render_template('facility-register.html')
+    else:
+        return redirect("/")
+
 @app.route("/dashboards")
 def display_dashboard():
-    name = session.get("name")
-    facility_data = db.execute("SELECT * FROM facilities WHERE facility_name = ? ", name)
-    patient_data = db.execute("SELECT * FROM patients WHERE patient_name = ? ", name)
+    client_name = session.get("name")
+    facility_data = db.execute("SELECT * FROM facilities WHERE facility_id = ? ", client_name)
+    patient_data = db.execute("SELECT * FROM patients WHERE patient_id = ? ", client_name)
     if len(facility_data) != 1:
-        return render_template('patient-dashboard.html',data=patient_data)
+        return render_template('./patient-dashboard/index.html',data=patient_data)
     elif len(patient_data) != 1:
         return render_template('./facility-dashboard/index.html',data=facility_data)
 
@@ -312,7 +301,13 @@ def serviceView():
     facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
     data = db.execute("SELECT * FROM services WHERE facility_id = ?", facility_id[0]["facility_id"])
     return render_template('service-view.html',data=data)
-    
+
+@app.route("/hospitals", methods=["GET", "POST"])
+def viewHospitals():
+    patient = session["id"]
+    data = db.execute("SELECT DISTINCT facility_name, facility_assign_num FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ?",patient)
+    return "TODO"
+
 @app.route("/diagnosis", methods=["GET", "POST"])
 def diagnose():
     return "TODO"

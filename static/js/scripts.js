@@ -1,7 +1,3 @@
-$(function () {
-    $('#myTab a:last').tab('show')
-})
-
 /*!
     * Start Bootstrap - SB Admin v7.0.4 (https://startbootstrap.com/template/sb-admin)
     * Copyright 2013-2021 Start Bootstrap
@@ -15,10 +11,6 @@ window.addEventListener('DOMContentLoaded', event => {
     // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
         sidebarToggle.addEventListener('click', event => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
@@ -40,7 +32,7 @@ function services(){
     ajax.send()
 }
 
-
+// view services
 $(document).ready(()=>{
     let ajax = new XMLHttpRequest();
     const facility = document.body.querySelector('#patient');
@@ -53,3 +45,17 @@ $(document).ready(()=>{
     ajax.open('GET', `/services-view?facility_name=${facility_name}`, true);
     ajax.send()
 });
+
+// carousel facility
+
+$(document).ready(()=>{
+    let ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = ()=>{
+        if(ajax.readyState == 4 && ajax.status == 200){
+            document.getElementById("hospitals").insertAdjacentHTML('beforeend',ajax.responseText)
+        }
+    }
+    ajax.open('GET', `/facility-carousel`, true);
+    ajax.send()
+});
+
