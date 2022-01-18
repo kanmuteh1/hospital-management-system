@@ -272,8 +272,8 @@ def register():
 @app.route("/dashboards")
 def display_dashboard():
     client_name = session.get("name")
-    facility_data = db.execute("SELECT * FROM facilities WHERE facility_id = ? ", client_name)
-    patient_data = db.execute("SELECT * FROM patients WHERE patient_id = ? ", client_name)
+    facility_data = db.execute("SELECT * FROM facilities WHERE facility_name = ? ", client_name)
+    patient_data = db.execute("SELECT * FROM patients WHERE patient_name = ? ", client_name)
     if len(facility_data) != 1:
         return render_template('./patient-dashboard/index.html',data=patient_data)
     elif len(patient_data) != 1:

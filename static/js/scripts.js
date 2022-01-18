@@ -39,7 +39,7 @@ $(document).ready(()=>{
     let facility_name = facility.name;
     ajax.onreadystatechange = ()=>{
         if(ajax.readyState == 4 && ajax.status == 200){
-            document.getElementById("services").insertAdjacentHTML('beforeend',ajax.responseText)
+            $('#services').html(ajax.responseText);
         }
     }
     ajax.open('GET', `/services-view?facility_name=${facility_name}`, true);
@@ -47,15 +47,15 @@ $(document).ready(()=>{
 });
 
 // carousel facility
-
 $(document).ready(()=>{
     let ajax = new XMLHttpRequest();
     ajax.onreadystatechange = ()=>{
         if(ajax.readyState == 4 && ajax.status == 200){
-            document.getElementById("hospitals").insertAdjacentHTML('beforeend',ajax.responseText)
+            $('#hospitals').html(ajax.responseText);
         }
     }
     ajax.open('GET', `/facility-carousel`, true);
     ajax.send()
 });
 
+ 

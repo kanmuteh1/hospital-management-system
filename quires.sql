@@ -16,7 +16,7 @@ CREATE TABLE facilities(
 -- patient table
 CREATE TABLE patients(
     patient_id INTEGER,
-    patient_name TEXT NOT NULL,
+    patient_name TEXT NOT NULL UNIQUE,
     patient_address TEXT NOT NULL,
     date_of_birth DATE NOT NULL,
     email TEXT NOT NULL UNIQUE,
@@ -42,11 +42,10 @@ CREATE TABLE registration(
 
 -- services table
 CREATE TABLE services(
-    id INT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     facility_id INT,
     facility_service TEXT NOT NULL,
     about_service TEXT NOT NULL,
-    PRIMARY KEY(id),
     FOREIGN KEY (facility_id)REFERENCES facilities(facility_id)
 );
 
