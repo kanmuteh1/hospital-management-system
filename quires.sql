@@ -20,8 +20,8 @@ CREATE TABLE patients(
     patient_address TEXT NOT NULL,
     date_of_birth DATE NOT NULL,
     email TEXT NOT NULL UNIQUE,
-    orang_number TEXT NOT NULL UNIQUE,
-    lonestar_number TEXT NOT NULL UNIQUE,
+    orang_number TEXT NOT NULL,
+    lonestar_number TEXT NOT NULL,
     password_hash TEXT NOT NULL,
     PRIMARY KEY(patient_id)
 );

@@ -216,7 +216,8 @@ def create_patient():
             # Remember which user has logged in
             session["name"] = rows[0]["patient_name"]
             # Redirect user to home page
-            return render_template("patient-dashboard.html",data=rows)
+            return redirect("/")
+            # return render_template("./patient-dashboard/index.html",data=rows)
 
         else:
             return apology("Sorry, username already exists", 400)
@@ -300,6 +301,7 @@ def serviceView():
     facility_name = request.args.get("facility_name")
     facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
     data = db.execute("SELECT * FROM services WHERE facility_id = ?", facility_id[0]["facility_id"])
+    print(data)
     return render_template('service-view.html',data=data)
 
 @app.route("/hospitals", methods=["GET", "POST"])
