@@ -109,7 +109,7 @@ def facility_login():
 
 @app.route("/facility-carousel")
 def carousel():
-    data = db.execute("SELECT facility_id, facility_name, facility_address FROM facilities ORDER BY funding_date LIMIT ? OFFSET ?", 4, 0)
+    data = db.execute("SELECT facility_id, facility_name, facility_address FROM facilities")
     return render_template('carousel-facility.html',data=data)
 
 @app.route("/facilities", methods=["GET", "POST"])

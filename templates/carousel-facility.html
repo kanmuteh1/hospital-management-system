@@ -1,15 +1,17 @@
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+<!-- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <div class="row gx-5 row-cols-1 row-cols-md-2" id="hospital">
+            <div class="row" id="hospital">
                 {% for data in data %}
-                    <a class="hospital" href="/facilities?name={{ data.facility_name }}">
-                        <div class="col mb-5 h-100">
-                            <div class="feature bg-dark bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
-                            <h2 class="h5">{{ data.facility_name }}</h2>
-                            <p class="mb-0"> {{ data.facility_address }}</p>
-                        </div>
-                    </a>
+                    <div class="col gx-8 row-cols-2 row-cols-md-2">
+                        <a class="hospital" href="/facilities?name={{ data.facility_name }}">
+                            <div class="col mb-5 h-100">
+                                <div class="feature bg-dark bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
+                                <h2 class="h5">{{ data.facility_name }}</h2>
+                                <p class="mb-0"> {{ data.facility_address }}</p>
+                            </div>
+                        </a>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -23,4 +25,36 @@
         <span class="carousel-control-next-icon btn-dark" id="next" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
+</div> -->
+<div id="owl-demo" class="owl-carousel owl-theme">
+    {% for data in data %}
+    <div class="item">
+        <a class="hospital" href="/facilities?name={{ data.facility_name }}">
+            <div class="col mb-5 h-100">
+                <div class="feature bg-dark bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
+                <h2 class="h5">{{ data.facility_name }}</h2>
+                <p class="mb-0"> {{ data.facility_address }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
 </div>
+<script>
+    $("#owl-demo").owlCarousel({
+        items: 4,
+        loop: true,
+        autoplay: true,
+        nav: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: true
+            },
+            600: {
+                items: 4,
+                nav: true
+            }
+        }
+    });
+</script>
