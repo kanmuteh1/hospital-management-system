@@ -11585,11 +11585,8 @@ img {
 
 .owl-nav{
   text-align: center;
-  font-size: 30px;
+  font-size: 50px;
 }
-.owl-nav button.owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev, .owl-carousel button.owl-dot{
-  padding-top: 0px !important;
-  padding-right: 10px !important;
-  padding-bottom: 0px !important;
-  padding-left: 10px !important;
-}
+.owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev, .owl-carousel button.owl-dot {
+    margin: 15px !important;
+} 
