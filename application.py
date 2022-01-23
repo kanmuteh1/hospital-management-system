@@ -239,7 +239,7 @@ def register():
     # registration status 
     status = ['Patient', 'Health Facility']
     choosen_status = request.args.get('status')
-
+    
     if request.method == "POST":
         patient_name = session.get("name")
         facility_name = request.args.get("facility_name")
@@ -247,10 +247,11 @@ def register():
         account_pin = request.form.get("password")
         # generate health-facility number
         hospital_num = '{0:0{x}d}'.format(random.randint(0, 10**12-1), x=12)
-        
+        # If user does not have an account or is not login
         if patient_name is None:
             return redirect("/patient-login")
         else: 
+            # If user has an account or is login
             patient_id = db.execute("SELECT patient_id FROM patients WHERE patient_name = ?", patient_name)
             facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
             data = db.execute("SELECT * FROM registration WHERE facility_id = ? AND patient_id = ?",facility_id[0]["facility_id"], patient_id[0]["patient_id"])
@@ -299,15 +300,16 @@ def service():
 @app.route("/services-view", methods=["GET", "POST"])
 def serviceView():
     facility_name = request.args.get("facility_name")
+    if facility_name[0] == "[":
+        return apology("No such facility", 404)
     facility_id = db.execute("SELECT facility_id FROM facilities WHERE facility_name = ?", facility_name)
     data = db.execute("SELECT * FROM services WHERE facility_id = ?", facility_id[0]["facility_id"])
-    print(data)
     return render_template('service-view.html',data=data)
 
 @app.route("/hospitals", methods=["GET", "POST"])
 def viewHospitals():
-    patient = session["id"]
-    data = db.execute("SELECT DISTINCT facility_name, facility_assign_num FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ?",patient)
+    patient = session["name"]
+    data = db.execute("SELECT DISTINCT facility_name, facility_assign_num FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_name = ?",patient)
     return "TODO"
 
 @app.route("/diagnosis", methods=["GET", "POST"])

@@ -22,7 +22,6 @@ window.addEventListener('DOMContentLoaded', event => {
 
 function services(){
     let ajax = new XMLHttpRequest();
-
     ajax.onreadystatechange = ()=>{
        if(ajax.readyState == 4 && ajax.status == 200){
             $('main').html(ajax.responseText);
