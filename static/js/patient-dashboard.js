@@ -32,3 +32,16 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+ // update hospital table
+$(document).ready(()=>{
+    let ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = ()=>{
+        console.log("---ajax respon---",ajax)
+        if(ajax.readyState == 4 && ajax.status == 200){
+            $('#hospitals-attend').html(ajax.responseText);
+        }
+    }
+    ajax.open('GET', `/hospitals`, true);
+    ajax.send()
+});
