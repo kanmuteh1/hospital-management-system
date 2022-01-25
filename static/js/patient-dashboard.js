@@ -38,7 +38,6 @@ $(document).ready(()=>{
     let ajax = new XMLHttpRequest();
     ajax.onreadystatechange = ()=>{
         if(ajax.readyState == 4 && ajax.status == 200){
-            console.log(ajax.responseText)
             $('tbody').html(ajax.responseText);
         }
     }
