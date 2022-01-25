@@ -310,7 +310,7 @@ def serviceView():
 def viewHospitals():
     patient = session["name"]
     ID = db.execute("SELECT patient_id FROM patients WHERE  patient_name = ?",patient)
-    data = db.execute("SELECT DISTINCT facility_name, facility_assign_num FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ?",ID[0]["patient_id"])
+    data = db.execute("SELECT DISTINCT facility_name, facility_assign_num, registration_date FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ? ORDER BY registration_date DESC",ID[0]["patient_id"])
     return render_template('./patient-dashboard/hospital.html',data=data)
 
 @app.route("/diagnosis", methods=["GET", "POST"])

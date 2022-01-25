@@ -37,11 +37,11 @@ window.addEventListener('DOMContentLoaded', event => {
 $(document).ready(()=>{
     let ajax = new XMLHttpRequest();
     ajax.onreadystatechange = ()=>{
-        console.log("---ajax respon---",ajax)
         if(ajax.readyState == 4 && ajax.status == 200){
-            $('#hospitals-attend').html(ajax.responseText);
+            console.log(ajax.responseText)
+            $('tbody').html(ajax.responseText);
         }
     }
-    ajax.open('GET', `/hospitals`, true);
+    ajax.open('GET', `/hospitals`);
     ajax.send()
 });

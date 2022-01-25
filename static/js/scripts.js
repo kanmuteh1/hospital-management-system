@@ -49,12 +49,13 @@ $(document).ready(()=>{
 $(document).ready(()=>{
     let ajax = new XMLHttpRequest();
     ajax.onreadystatechange = ()=>{
-        if(ajax.readyState == 4 && ajax.status == 200){
+        if(ajax.readyState === 4 && ajax.status === 200){
             $('#hospitals').html(ajax.responseText);
         }
     }
     ajax.open('GET', `/facility-carousel`, true);
     ajax.send()
 });
+
 
  

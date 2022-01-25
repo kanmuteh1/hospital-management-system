@@ -1,36 +1,7 @@
-{% extends "./patient-dashboard/dashboard.html" %}
-
-{% block title %}
-    | Home
-{% endblock %}
-
-{% block main %}
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Hospitals
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple">
-            <thead>
-                <tr>
-                    <th>Hospital</th>
-                    <th>Hospital ID</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Hospital</th>
-                    <th>Hospital ID</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                {% for data in data%}
-                    <tr>
-                        <td>{{ data.facility_name }}</td>
-                        <td>{{ data.facility_assign_num }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endblock %}              
+{% for data in data%}
+    <tr>
+        <td>{{ data.facility_name }}</td>
+        <td>{{ data.facility_assign_num }}</td>
+        <td>{{ data.registration_date }}</td>
+    </tr>
+{% endfor %}
