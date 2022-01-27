@@ -1,0 +1,9 @@
+{% for data in data%}
+    <tr>
+        <td>{{ data.patient_name }}</td>
+        <td>{{ data.facility_assign_num }}</td>
+        <td>{{ data.registration_date }}</td>
+        <td><button class="btn btn-outline-danger" type="submit">Diagnose</button></td>
+        <td><button class="btn btn-outline-success" type="submit">Treatment</button></td>
+    </tr>
+{% endfor %}

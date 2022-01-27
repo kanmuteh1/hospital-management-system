@@ -83,10 +83,4 @@ VALUES("Redmenption Hospital","New kru town",datetime('now'),"Dr.Moses Blackie",
 ","    Lorem ipsum dolor sit amet consectetur adipisicing elit. At magni dolorem cumque inventore praesentium quis suscipit ipsa nemo ratione vero. Molestias sunt eum consectetur labore nam eos at libero voluptate!Lorem
 ","redemption@gmail.com","0778596321","0886243320","redemption123456789");
 
-SELECT col1, col2, ...
- FROM ...
- WHERE ... 
- ORDER BY -- this is a MUST there must be ORDER BY statement
--- the paging comes here
-OFFSET     10 ROWS       -- skip 10 rows
-FETCH NEXT 10 ROWS ONLY; -- take 10 rows
+SELECT facility_name, facility_assign_num FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ? ORDER BY registration_date DESC LIMIT 1,

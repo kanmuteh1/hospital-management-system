@@ -57,5 +57,15 @@ $(document).ready(()=>{
     ajax.send()
 });
 
-
+// update hospital dashboard with patient's info
+ $(document).ready(()=>{
+    let ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = ()=>{
+        if(ajax.readyState == 4 && ajax.status == 200){
+            $('tbody').html(ajax.responseText);
+        }
+    }
+    ajax.open('GET', `/patients`);
+    ajax.send()
+});
  

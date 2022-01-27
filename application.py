@@ -222,8 +222,11 @@ def create_patient():
         else:
             return apology("Sorry, username already exists", 400)
     else:
-        # # Query database for username
-        return "TODO"
+        # Query database for username
+        hospital = session["name"]
+        ID = db.execute("SELECT facility_id FROM facilities WHERE  facility_name = ?",hospital)
+        data = db.execute("SELECT patient_name, facility_assign_num, registration_date FROM registration INNER JOIN patients ON patients.patient_id = registration.patient_id WHERE facility_id = ? GROUP BY patient_name ORDER BY registration_date DESC",ID[0]["facility_id"])
+        return render_template('./facility-dashboard/patients.html',data=data)
 
 # log user out
 @app.route("/logout")
@@ -310,7 +313,7 @@ def serviceView():
 def viewHospitals():
     patient = session["name"]
     ID = db.execute("SELECT patient_id FROM patients WHERE  patient_name = ?",patient)
-    data = db.execute("SELECT DISTINCT facility_name, facility_assign_num, registration_date FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ? ORDER BY registration_date DESC",ID[0]["patient_id"])
+    data = db.execute("SELECT facility_name, facility_assign_num, registration_date FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ? GROUP BY facility_name ORDER BY registration_date DESC",ID[0]["patient_id"])
     return render_template('./patient-dashboard/hospital.html',data=data)
 
 @app.route("/diagnosis", methods=["GET", "POST"])
