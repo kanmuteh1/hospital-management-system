@@ -89,10 +89,10 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-main {
+/* main {
   display: block;
   height: 100%;
-}
+} */
 
 hr {
   margin: 1rem 0;
@@ -11299,15 +11299,6 @@ textarea.form-control-lg {
 body,
 html {
   height: 100%;  
-  overflow: hidden;
-}
-
-@media (max-width: 990px) {
-  body,
-  html {
-    height: 100%;  
-    overflow: scroll;
-  }
 }
 
 .feature {
@@ -11605,8 +11596,7 @@ img {
 .owl-nav{
   text-align: center;
   font-size: 50px;
-  color: white;
 }
 .owl-carousel .owl-nav button.owl-next, .owl-carousel .owl-nav button.owl-prev, .owl-carousel button.owl-dot {
-  margin: 15px !important;
-}
+    margin: 15px !important;
+} 

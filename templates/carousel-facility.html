@@ -1,12 +1,9 @@
 <div id="owl-demo" class="owl-carousel owl-theme">
     {% for data in data %}
-    <div class="item">
+    <div class="item shadow p-3 mx-3 mb-0 bg-white rounded text-left">
         <a class="hospital" href="/facilities?name={{ data.facility_name }}">
-            <div class="col mb-5 h-100">
-                <div class="feature bg-dark bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
-                <h2 class="h5">{{ data.facility_name }}</h2>
-                <p class="mb-0"> {{ data.facility_address }}</p>
-            </div>
+            <div class="feature bg-dark bg-gradient text-white rounded-3 mb-0"><i class="bi bi-collection"></i></div>
+            <h2 class="h5">{{ data.facility_name }}</h2>
         </a>
     </div>
     {% endfor %}
