@@ -48,39 +48,3 @@ CREATE TABLE services(
     about_service TEXT NOT NULL,
     FOREIGN KEY (facility_id)REFERENCES facilities(facility_id)
 );
-
-CREATE TABLE diagnosis(
-    id INTEGER,
-    facility_id,
-    patient_id,
-    test_taken TEXT NOT NULL,
-    diagnostic_result TEXT NOT NULL,
-    diagnostic_date DATE NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY (facility_id)REFERENCES facilities(facility_id),
-    FOREIGN KEY (patient_id)REFERENCES patients(patient_id)
-);
-
-CREATE TABLE treaments(
-    id INTEGER,
-    facility_id,
-    patient_id,
-    purpose TEXT NOT NULL,
-    prescription TEXT NOT NULL,
-    prescription_discription TEXT NOT NULL,
-    begin_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    PRIMARY KEY(id),    
-    FOREIGN KEY (facility_id)REFERENCES facilities(facility_id),
-    FOREIGN KEY (patient_id)REFERENCES patients(patient_id)
-);
-
-
-
-
-INSERT INTO facilities (facility_name,facility_address,funding_date,head_doctor,impact,history,email,orang_number,lonestar_number,password_hash) 
-VALUES("Redmenption Hospital","New kru town",datetime('now'),"Dr.Moses Blackie","    Lorem ipsum dolor sit amet consectetur adipisicing elit. At magni dolorem cumque inventore praesentium quis suscipit ipsa nemo ratione vero. Molestias sunt eum consectetur labore nam eos at libero voluptate!Lorem
-","    Lorem ipsum dolor sit amet consectetur adipisicing elit. At magni dolorem cumque inventore praesentium quis suscipit ipsa nemo ratione vero. Molestias sunt eum consectetur labore nam eos at libero voluptate!Lorem
-","redemption@gmail.com","0778596321","0886243320","redemption123456789");
-
-SELECT facility_name, facility_assign_num FROM registration INNER JOIN facilities ON facilities.facility_id = registration.facility_id WHERE patient_id = ? ORDER BY registration_date DESC LIMIT 1,
